@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.util.Arrays;
 import java.util.List;
@@ -72,8 +71,7 @@ public class ArrayCollectionTest {
 
     @Test
     public void testClear() {
-        String[] array = arrayCollection.toArray(testArray);
-        arrayCollection.setArray(array);
+        arrayCollection.setArray(testArray);
         assertEquals("Size must be 3", 3, arrayCollection.getArray().length);
         arrayCollection.clear();
         assertEquals("Size must be 0 after cleaning", 0,
@@ -84,6 +82,7 @@ public class ArrayCollectionTest {
     public void testIsEmpty() {
         assertTrue("New collection must be empty", arrayCollection.isEmpty());
         arrayCollection.add("Three");
+        assertEquals("size must be 1 ", 1, arrayCollection.getArray().length);
         assertFalse("must be not empty after addition element",
                 arrayCollection.isEmpty());
 
@@ -102,17 +101,19 @@ public class ArrayCollectionTest {
 
     }
 
-    @Test
+    @Test(expected = NullPointerException.class)
     public void testContainsAll() {
+        arrayCollection.containsAll(null);
+    }
 
-        try {
-            arrayCollection.containsAll(null);
-            fail("containsAll(null) should throw NullPointerException");
-        } catch (NullPointerException e) {
-        } catch (Exception e) {
-        }
+    @Test
+    public void testAddAll() {
+        assertTrue(" must return true after executing method ",
+                arrayCollection.addAll(Arrays.asList(testArray)));
+        assertNotNull("collection must be not null ",
+                arrayCollection.getArray());
+        assertEquals("Size must be 3", 3, arrayCollection.size());
 
-        arrayCollection.addAll(Arrays.asList(testArray));
         assertTrue("wrong containsAll",
                 arrayCollection.containsAll(Arrays.asList(testArray)));
 
@@ -158,7 +159,7 @@ public class ArrayCollectionTest {
     public void testRemoveAll() {
         arrayCollection.add("zero");
         arrayCollection.addAll(Arrays.asList(testArray));
-
+        assertEquals("Size must be 4", 4, arrayCollection.getArray().length);
         assertTrue("should return true if coll changed",
                 arrayCollection.removeAll(Arrays.asList(testArray)));
         assertFalse("should be not empty", arrayCollection.isEmpty());
@@ -170,6 +171,9 @@ public class ArrayCollectionTest {
     @Test
     public void testRetainAll() throws InterruptedException {
         arrayCollection.addAll(Arrays.asList(testArray));
+        assertEquals("Size must be 3", 3, arrayCollection.getArray().length);
+        assertTrue("should contains all elements after addition",
+                arrayCollection.containsAll(Arrays.asList(testArray)));
         List<String> list = Arrays.asList(testArray2);
         assertTrue("Collection must modified", arrayCollection.retainAll(list));
         assertEquals("After operation size must be 2", 2,
