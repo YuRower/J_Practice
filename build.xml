@@ -48,6 +48,10 @@
 	<target name="clean"
 		description="clear all generated files in main folder">
 		<delete dir="${build.dir}" />
+	<delete>
+		<fileset dir="." includes="**/*.exec"/>
+	</delete>
+
 	</target>
 
 	<target name="compile" description="compile the project">
@@ -207,10 +211,8 @@
 		<java jar="${jar.dir}/${ant.project.name}.jar" fork="true">
 		</java>
 	</target>
-
-	<target name="clean-test" depends="clean " />
-
-	<target name="main"
+	<target name="clean_all" depends="clean " />
+	<target name="all"
 		depends="clean, compile ,test, jar, checkstyle ,testreport , testcoverage" />
 
 </project>
