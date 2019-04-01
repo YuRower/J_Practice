@@ -4,6 +4,7 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
@@ -39,22 +40,20 @@ public class ArrayCollectionTest {
     @Test
     public void testAdd() {
         assertTrue("Collection must modified", arrayCollection.add("One"));
-
-        assertEquals("Size must be 1 after adding 1 element", 1,
-                arrayCollection.getArray().length);
-
-        arrayCollection.add("Two");
-        assertEquals("Size must be 2 after adding null element", 2,
-                arrayCollection.getArray().length);
-
+        assertTrue("Method should return true", arrayCollection.add("Two"));
         arrayCollection.add("Three");
-
-        Object[] expected = arrayCollection.toArray(testArray);
-        Object[] actual = arrayCollection.getArray();
-        assertArrayEquals("Arrays must equals", expected, actual);
+        assertArrayEquals("checking for equals of testArray and initial array",
+                testArray, arrayCollection.getArray());
 
         assertTrue("add should return true if addition was done",
                 arrayCollection.add(null));
+        assertEquals("length of array should be 4 ", 4,
+                arrayCollection.getArray().length);
+        assertEquals("first element should be 'one'", "One",
+                arrayCollection.getArray()[0]);
+        int size = arrayCollection.getArray().length;
+        assertNull("last element should be null",
+                arrayCollection.getArray()[size - 1]);
 
     }
 
@@ -113,12 +112,8 @@ public class ArrayCollectionTest {
         assertNotNull("collection must be not null ",
                 arrayCollection.getArray());
         assertEquals("Size must be 3", 3, arrayCollection.size());
-
-        assertTrue("wrong containsAll",
-                arrayCollection.containsAll(Arrays.asList(testArray)));
-
-        assertFalse("wrong containsAll", arrayCollection.containsAll(
-                Arrays.asList(new String[] { "One", "Two", "Three", "Four" })));
+        assertArrayEquals("checking for equals of derived and initial arrays",
+                testArray, arrayCollection.getArray());
 
     }
 
@@ -148,11 +143,25 @@ public class ArrayCollectionTest {
     }
 
     @Test
-    public void testGetArray() {
+    public void testArraySize() {
+        assertEquals("after create size should be 0", 0,
+                arrayCollection.size());
         arrayCollection.addAll(Arrays.asList(testArray));
-        Object[] actual = arrayCollection.getArray();
-        assertNotNull("Can't be null", actual);
-        assertArrayEquals("Arrays must equals", testArray, actual);
+        assertEquals("size should be 3", arrayCollection.getArray().length,
+                arrayCollection.size());
+        arrayCollection.clear();
+        assertEquals("after clear size should be 0", 0, arrayCollection.size());
+
+        arrayCollection.add("zero");
+        assertEquals("size should be 1", 1, arrayCollection.size());
+
+    }
+
+    @Test
+    public void testToArray() {
+        arrayCollection.addAll(Arrays.asList(testArray));
+        assertArrayEquals("added array and toArray method should be equals",
+                testArray, arrayCollection.toArray());
     }
 
     @Test
@@ -166,6 +175,8 @@ public class ArrayCollectionTest {
 
         assertEquals("should contain one elem", 1,
                 arrayCollection.getArray().length);
+        assertEquals("first element should be 'zero'", "zero",
+                arrayCollection.getArray()[0]);
     }
 
     @Test
@@ -178,5 +189,7 @@ public class ArrayCollectionTest {
         assertTrue("Collection must modified", arrayCollection.retainAll(list));
         assertEquals("After operation size must be 2", 2,
                 arrayCollection.getArray().length);
+        assertArrayEquals("checking for equals of derived and initial arrays",
+                arrayCollection.getArray(), testArray2);
     }
 }
