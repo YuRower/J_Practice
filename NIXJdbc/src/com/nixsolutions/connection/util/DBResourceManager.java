@@ -21,7 +21,7 @@ public final class DBResourceManager {
     public static final String POOL_SIZE = "maximumPoolSize";
     public static final String IDLE_CONNECTIONS = "minimumIdle";
 
-    public static void setBundle(String pathProperty) {
+    public static void setProperty(String pathProperty) {
         property = pathProperty;
     }
 
@@ -29,24 +29,17 @@ public final class DBResourceManager {
         LOGGER.trace("load propertie files");
         Properties properties = new Properties();
         if (property == null) {
-            try {
-                properties.load(Thread.currentThread().getContextClassLoader()
-                        .getResourceAsStream("resources/database.properties"));
-                return properties;
-            } catch (IOException e) {
-                LOGGER.error("Exception while loading DB properties file", e);
-                throw new RuntimeException(e);
-            }
-        } else {
-            try {
-                properties.load(Thread.currentThread().getContextClassLoader()
-                        .getResourceAsStream(property));
-                return properties;
-            } catch (IOException e) {
-                LOGGER.error("Exception while loading DB properties file", e);
-                throw new RuntimeException(e);
-            }
+            property = "resources/database.properties";
         }
+        try {
+            properties.load(Thread.currentThread().getContextClassLoader()
+                    .getResourceAsStream(property));
+            return properties;
+        } catch (IOException e) {
+            LOGGER.error("Exception while loading DB properties file", e);
+            throw new RuntimeException(e);
+        }
+
     }
 
     public static String getProperty(String key) {

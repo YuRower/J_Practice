@@ -10,10 +10,10 @@ public class User {
     private String firstName;
     private String lastName;
     private Date birthday;
-    private Long userRoleId;
+    private Long roleId;
 
     public User(Long id, String login, String password, String email,
-            String firstName, String lastName, Date birthday, Long userRoleId) {
+            String firstName, String lastName, Date birthday, Long roleId) {
         super();
         this.id = id;
         this.login = login;
@@ -22,7 +22,7 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthday = birthday;
-        this.userRoleId = userRoleId;
+        this.roleId = roleId;
     }
 
     public User() {
@@ -84,12 +84,12 @@ public class User {
         this.birthday = birthday;
     }
 
-    public Long getUserRoleId() {
-        return userRoleId;
+    public Long getRoleId() {
+        return roleId;
     }
 
-    public void setUserRoleId(Long userRoleId) {
-        this.userRoleId = userRoleId;
+    public void setRoleId(Long userRoleId) {
+        this.roleId = userRoleId;
     }
 
     @Override
@@ -108,7 +108,7 @@ public class User {
         result = prime * result
                 + ((password == null) ? 0 : password.hashCode());
         result = prime * result
-                + ((userRoleId == null) ? 0 : userRoleId.hashCode());
+                + ((roleId == null) ? 0 : roleId.hashCode());
         return result;
     }
 
@@ -156,10 +156,10 @@ public class User {
                 return false;
         } else if (!password.equals(other.password))
             return false;
-        if (userRoleId == null) {
-            if (other.userRoleId != null)
+        if (roleId == null) {
+            if (other.roleId != null)
                 return false;
-        } else if (!userRoleId.equals(other.userRoleId))
+        } else if (!roleId.equals(other.roleId))
             return false;
         return true;
     }
@@ -169,7 +169,7 @@ public class User {
         return "User [id=" + id + ", login=" + login + ", password=" + password
                 + ", email=" + email + ", firstName=" + firstName
                 + ", lastName=" + lastName + ", birthday=" + birthday
-                + ", userRoleId=" + userRoleId + "]";
+                + ", userRoleId=" + roleId + "]";
     }
 
 }

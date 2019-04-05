@@ -36,16 +36,11 @@ public class JdbcRoleDao extends AbstractJdbcDao implements RoleDao {
             pstmt = conn.prepareStatement(SQL_CREATE_ROLE,
                     Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, role.getName());
-            if (pstmt.executeUpdate() > 0) {
-                rs = pstmt.getGeneratedKeys();
-                if (rs.next()) {
-                    role.setId(rs.getLong(ROLE_ID));
-                }
-            }
+            pstmt.executeUpdate();
             conn.commit();
         } catch (SQLException ex) {
-            rollbackConnection(conn);
             LOG.error(Messages.ERR_CANNOT_CREATE_ROLE, ex);
+            rollbackConnection(conn);
             throw new DBException(Messages.ERR_CANNOT_CREATE_ROLE, ex);
         } finally {
             close(conn, pstmt, rs);
@@ -66,8 +61,8 @@ public class JdbcRoleDao extends AbstractJdbcDao implements RoleDao {
             pstmt.executeUpdate();
             conn.commit();
         } catch (SQLException ex) {
-            rollbackConnection(conn);
             LOG.error(Messages.ERR_CANNOT_UPDATE_ROLE, ex);
+            rollbackConnection(conn);
             throw new DBException(Messages.ERR_CANNOT_UPDATE_ROLE, ex);
         } finally {
             close(pstmt);
@@ -87,8 +82,8 @@ public class JdbcRoleDao extends AbstractJdbcDao implements RoleDao {
             pstmt.executeUpdate();
             conn.commit();
         } catch (SQLException ex) {
-            rollbackConnection(conn);
             LOG.error(Messages.ERR_CANNOT_REMOVE_ROLE, ex);
+            rollbackConnection(conn);
             throw new DBException(Messages.ERR_CANNOT_REMOVE_ROLE, ex);
         } finally {
             close(pstmt);
@@ -115,8 +110,8 @@ public class JdbcRoleDao extends AbstractJdbcDao implements RoleDao {
             }
             conn.commit();
         } catch (SQLException ex) {
-            rollbackConnection(conn);
             LOG.error(Messages.ERR_CANNOT_FIND_ROLE, ex);
+            rollbackConnection(conn);
             throw new DBException(Messages.ERR_CANNOT_FIND_ROLE, ex);
         } finally {
             close(conn, pstmt, rs);

@@ -53,18 +53,13 @@ public class JdbcUserDao extends AbstractJdbcDao implements UserDao {
             pstmt.setString(4, user.getFirstName());
             pstmt.setString(5, user.getLastName());
             pstmt.setDate(6, new java.sql.Date(user.getBirthday().getTime()));
-            pstmt.setLong(7, user.getUserRoleId());
-            LOG.info(user.getUserRoleId() + " ");
-            if (pstmt.executeUpdate() > 0) {
-                rs = pstmt.getGeneratedKeys();
-                if (rs.next()) {
-                    user.setId(rs.getLong(USER_ID));
-                }
-            }
+            pstmt.setLong(7, user.getRoleId());
+            LOG.info(user.getRoleId() + " ");
+            pstmt.executeUpdate();
             conn.commit();
         } catch (SQLException ex) {
-            rollbackConnection(conn);
             LOG.error(Messages.ERR_CANNOT_CREATE_USER, ex);
+            rollbackConnection(conn);
             throw new DBException(Messages.ERR_CANNOT_CREATE_USER, ex);
         } finally {
             close(conn, pstmt, rs);
@@ -84,13 +79,13 @@ public class JdbcUserDao extends AbstractJdbcDao implements UserDao {
             pstmt.setString(4, user.getFirstName());
             pstmt.setString(5, user.getLastName());
             pstmt.setDate(6, new java.sql.Date(user.getBirthday().getTime()));
-            pstmt.setLong(7, user.getUserRoleId());
+            pstmt.setLong(7, user.getRoleId());
             pstmt.setLong(8, user.getId());
             pstmt.executeUpdate();
             conn.commit();
         } catch (SQLException ex) {
-            rollbackConnection(conn);
             LOG.error(Messages.ERR_CANNOT_UPDATE_USER, ex);
+            rollbackConnection(conn);
             throw new DBException(Messages.ERR_CANNOT_UPDATE_USER, ex);
         } finally {
             close(pstmt);
@@ -110,8 +105,8 @@ public class JdbcUserDao extends AbstractJdbcDao implements UserDao {
             pstmt.executeUpdate();
             conn.commit();
         } catch (SQLException ex) {
-            rollbackConnection(conn);
             LOG.error(Messages.ERR_CANNOT_REMOVE_USER, ex);
+            rollbackConnection(conn);
             throw new DBException(Messages.ERR_CANNOT_REMOVE_USER, ex);
         } finally {
             close(pstmt);
@@ -134,8 +129,8 @@ public class JdbcUserDao extends AbstractJdbcDao implements UserDao {
             }
             conn.commit();
         } catch (SQLException ex) {
-            rollbackConnection(conn);
             LOG.error(Messages.ERR_CANNOT_FIND_USERS, ex);
+            rollbackConnection(conn);
             throw new DBException(Messages.ERR_CANNOT_FIND_USERS, ex);
         } finally {
             close(conn, stmt, rs);
@@ -152,7 +147,7 @@ public class JdbcUserDao extends AbstractJdbcDao implements UserDao {
         user.setFirstName(rs.getString(USER_FIRST_NAME));
         user.setLastName(rs.getString(USER_LAST_NAME));
         user.setBirthday(rs.getDate((BIRTHDAY)));
-        user.setUserRoleId(rs.getLong(USER_ROLE_ID));
+        user.setRoleId(rs.getLong(USER_ROLE_ID));
         return user;
     }
 
@@ -172,8 +167,8 @@ public class JdbcUserDao extends AbstractJdbcDao implements UserDao {
             }
             conn.commit();
         } catch (SQLException ex) {
-            rollbackConnection(conn);
             LOG.error(Messages.ERR_CANNOT_FIND_USER_BY_LOGIN, ex);
+            rollbackConnection(conn);
             throw new DBException(Messages.ERR_CANNOT_FIND_USER_BY_LOGIN, ex);
         } finally {
             close(conn, pstmt, rs);
@@ -197,8 +192,8 @@ public class JdbcUserDao extends AbstractJdbcDao implements UserDao {
             }
             conn.commit();
         } catch (SQLException ex) {
-            rollbackConnection(conn);
             LOG.error(Messages.ERR_CANNOT_FIND_USER_BY_EMAIL, ex);
+            rollbackConnection(conn);
             throw new DBException(Messages.ERR_CANNOT_FIND_USER_BY_EMAIL, ex);
         } finally {
             close(conn, pstmt, rs);

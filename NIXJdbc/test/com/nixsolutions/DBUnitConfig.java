@@ -1,15 +1,11 @@
 package com.nixsolutions;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import org.apache.log4j.xml.DOMConfigurator;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
@@ -35,15 +31,13 @@ public class DBUnitConfig {
     private static final Logger LOGGER = LoggerFactory
             .getLogger(DBUnitConfig.class);
     protected static final String SCHEMA = "LABA13_DB";
-    protected static final String SCHEMA_PATH = "test/resources/schema.sql";
-    protected static final String TABLES_PATH = "test/resources/tables.sql";
+    protected static final String SCHEMA_PATH = "resources/schema.sql";
+    protected static final String TABLES_PATH = "resources/tables.sql";
     private final ConnectionPool connectionPool;
 
     public DBUnitConfig() {
-        URL u = getClass().getClassLoader().getResource("resources/log4j.xml");
-        DOMConfigurator.configure(u);
         LOGGER.trace("DBUnit Config");
-        DBResourceManager.setBundle("resources/dbtest.properties");
+        DBResourceManager.setProperty("resources/dbtest.properties");
         connectionPool = ConnectionPool.getInstance();
     }
 
@@ -54,12 +48,12 @@ public class DBUnitConfig {
             connection = connectionPool.getConnection();
             RunScript.execute(connection,
                     new InputStreamReader(
-                            new FileInputStream(new File(SCHEMA_PATH)),
+                            getClass().getResourceAsStream("/" + SCHEMA_PATH),
                             StandardCharsets.UTF_8));
             connection.commit();
         } catch (SQLException ex) {
-            rollbackConnection(connection);
             LOGGER.error(Messages.ERR_CANNOT_CREATE_SCHEMA, ex);
+            rollbackConnection(connection);
             throw new DBException(Messages.ERR_CANNOT_CREATE_SCHEMA, ex);
         } finally {
             close(connection);
@@ -74,12 +68,12 @@ public class DBUnitConfig {
             connection = connectionPool.getConnection();
             RunScript.execute(connection,
                     new InputStreamReader(
-                            new FileInputStream(new File(TABLES_PATH)),
+                            getClass().getResourceAsStream("/" + TABLES_PATH),
                             StandardCharsets.UTF_8));
             connection.commit();
         } catch (SQLException ex) {
-            rollbackConnection(connection);
             LOGGER.error(Messages.ERR_CANNOT_CREATE_TABLES, ex);
+            rollbackConnection(connection);
             throw new DBException(Messages.ERR_CANNOT_CREATE_TABLES, ex);
         } finally {
             close(connection);
@@ -100,8 +94,8 @@ public class DBUnitConfig {
                     xmlDataSet);
             connection.commit();
         } catch (Exception ex) {
-            rollbackConnection(connection);
             LOGGER.error(Messages.ERR_CANNOT_FILL_TABLE, ex);
+            rollbackConnection(connection);
             throw new DBException(Messages.ERR_CANNOT_FILL_TABLE, ex);
         } finally {
             close(connection);
@@ -121,12 +115,12 @@ public class DBUnitConfig {
                 connection.commit();
                 dataSetTable = dataSet.getTable(tableName);
             } catch (Exception e) {
-                e.printStackTrace();
+                LOGGER.error("cannot get table from schema", e);
             }
             return dataSetTable;
         } catch (SQLException ex) {
+            LOGGER.error("cannot get connection", ex);
             rollbackConnection(connection);
-            LOGGER.error("cannot get table from schema", ex);
             throw new DBException();
         } finally {
             close(connection);
@@ -180,7 +174,6 @@ public class DBUnitConfig {
                 conn.rollback();
             } catch (SQLException e) {
                 LOGGER.error("Cannot rollback connection", e);
-                e.printStackTrace();
             }
         }
     }

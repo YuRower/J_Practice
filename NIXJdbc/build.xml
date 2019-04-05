@@ -41,7 +41,7 @@
     <pathelement location="${classes.dir.test}" />
   </path>
   <property name="checkstyle.path"
-    value="${lib.dir}/checkstyle-8.18-all.jar" />
+    value="${lib.dir}/checkstyle-6.13-all.jar" />
 
   <taskdef classpathref="classpath" resource="tasks.properties" />
   <!-- Targets -->
@@ -140,22 +140,21 @@
 
 
 
-  <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask">
-    <classpath refid="classpath" />
-  </taskdef>
-  <target name="pmd">
+<taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask">
+			<classpath refid="classpath" />
+		</taskdef>
+		  <target name="pmd">
     <mkdir dir="${pmd.report.dir}" />
-    <pmd>
-      <formatter type="html"
-        toFile="${pmd.report.dir}/pmd_report.html" />
-      <ruleset>lib/design.xml</ruleset>
-      <ruleset>lib/javabeans.xml</ruleset>
-      <ruleset>lib/basic.xml</ruleset>
-      <ruleset>lib/imports.xml</ruleset>
-      <fileset dir="${src.dir}">
-        <include name="**/*.java" />
-      </fileset>
-    </pmd>
+   
+		<pmd rulesetfiles="rulesets/internal/all-java.xml" shortFilenames="true">
+			  <formatter type="html"
+        toFile="${pmd.report.dir}/pmd_report.html" toConsole="false" />
+			<fileset dir="${src.dir}">
+				<include name="**/*.java" />
+			</fileset>
+		</pmd>
+
+
   </target>
 
 
@@ -220,3 +219,4 @@
     depends="clean , compile ,testcompile , jar ,test , checkstyle , testcoverage, testreport" />
 
 </project>
+

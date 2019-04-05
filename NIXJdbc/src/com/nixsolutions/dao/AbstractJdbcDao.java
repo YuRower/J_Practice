@@ -14,17 +14,13 @@ import com.nixsolutions.exception.Messages;
 
 public abstract class AbstractJdbcDao {
 
-    private ConnectionPool connectionPool;
-
     private static final Logger LOGGER = LoggerFactory
             .getLogger(AbstractJdbcDao.class);
 
     public Connection createConnection() {
-        if (connectionPool == null) {
-            connectionPool = ConnectionPool.getInstance();
-        }
         try {
-            Connection connection = connectionPool.getConnection();
+            Connection connection = ConnectionPool.getInstance()
+                    .getConnection();
             return connection;
         } catch (SQLException e) {
             LOGGER.error("Connection error", e);
@@ -73,7 +69,7 @@ public abstract class AbstractJdbcDao {
             try {
                 conn.rollback();
             } catch (SQLException e) {
-                e.printStackTrace();
+                LOGGER.error(Messages.ERR_CANNOT_ROLLBACK_CONNECTION, e);
             }
         }
 

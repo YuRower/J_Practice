@@ -42,6 +42,8 @@ public final class Messages {
 
     public static final String ERR_CANNOT_CREATE_SCHEMA = "Cannot create schema";
 
+    public static final String ERR_CANNOT_ROLLBACK_CONNECTION = "Cannot rollback connection";;
+
     private Messages() {
     }
 
