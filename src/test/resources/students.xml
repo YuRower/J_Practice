@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<groups>
+   <group name="cs-31">
+      <students>
+         <student login="login1" faculty="Aeronautics and Astronautics">
+            <name>Klimenko</name>
+            <telephone>+38050</telephone>
+            <address>
+               <city>Kharkiv</city>
+               <country>UKR</country>               
+               <street>Biblika 4</street>
+            </address>          
+         </student>
+         <student login="login2" faculty="Biological Engineering">
+            <name>Ivanov</name>
+            <telephone>3805070</telephone>
+            <telephone>+38050</telephone>           
+            <address>
+               <city>Kiev</city>
+               <country>UKR</country>
+               <street>Simeona P. 23</street>
+            </address>
+         </student>
+      </students>
+   </group>
+   <group name="cs-32">
+      <students>
+        <student login="login3" faculty="Chemical Engineering">
+            <name>Klimenko2</name>
+            <telephone>+38050</telephone>
+            <address>
+               <city>Kharkiv</city>
+               <country>UKR</country>               
+               <street>Biblika 4</street>   
+               </address> 
+         </student>
+         <student login="login4" faculty="Civil and Environmental Engineering">
+            <name>Ivanov2</name>
+            <telephone>3805070</telephone>
+            <telephone>+38050</telephone>           
+            <address>
+               <city>Kiev</city>
+               <country>UKR</country>
+               <street>Simeona P. 23</street>
+            </address>
+         </student>
+      </students>
+   </group>
+   <group name="cs33">
+      <students>
+          <student login="login5" faculty="Electrical Engineering and Computer Science">
+            <name>Klimenko3</name>
+            <telephone>+38051</telephone>
+            <telephone>+38052</telephone>
+            
+            <address>
+               <city>Kharkiv</city>
+               <country>UKR</country>               
+               <street>Biblika 4</street>   
+               </address> 
+         </student>
+         <student login="login6" faculty="Institute for Data, Systems, and Society">
+            <name>Ivanov3</name>
+            <telephone>3805070</telephone>
+            <telephone>+38050</telephone>           
+            <address>
+               <city>Kiev</city>
+               <country>UKR</country>
+               <street>Simeona P. 23</street>
+            </address>
+         </student>
+      </students>
+   </group>
+</groups>
+
