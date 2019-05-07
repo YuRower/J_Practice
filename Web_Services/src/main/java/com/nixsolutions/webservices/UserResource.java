@@ -1,4 +1,4 @@
-package com.nixsolutions.web_services;
+package com.nixsolutions.webservices;
 
 import java.util.List;
 
@@ -30,12 +30,6 @@ public class UserResource {
 	@Autowired
 	private UserService userService;
 
-	/*
-	 * protected static ClientConfig createClientConfig() { ClientConfig config =
-	 * new ClientConfig(); config.register(new
-	 * LoggingFeature(Logger.getLogger(LoggingFeature.DEFAULT_LOGGER_NAME),
-	 * Level.INFO, LoggingFeature.Verbosity.PAYLOAD_ANY, 10000)); return config; }
-	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<User> fetchAll() {
