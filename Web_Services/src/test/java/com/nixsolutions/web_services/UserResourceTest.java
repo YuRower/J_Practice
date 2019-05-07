@@ -44,8 +44,8 @@ import com.nixsolutions.model.User;
 import com.nixsolutions.model.UserListWrapper;
 
 public class UserResourceTest {
-	private static final String BASE_URL = "http://10.10.35.192:8080/SpringMockito/rest/users";
-	private static final String URL_RESOURCE = "http://10.10.35.192:8080/SpringMockito/rest/users/user/{login}";
+	private static final String BASE_URL = "http://10.10.35.192:8080/Web_Services/rest/users";
+	private static final String URL_RESOURCE = "http://10.10.35.192:8080/Web_Services/rest/users/user/{login}";
 	private static final String NON_EXISTS_LOGIN = "nonExistsLogin";
 
 	private RestTemplate restTemplate;
