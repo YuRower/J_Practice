@@ -53,7 +53,7 @@
 							</additionalJvmArgs>
 							<wsdlOptions>
 								<wsdlOption>
-									<wsdl>http://10.10.35.192:8080/SpringMockito/soap/users?wsdl</wsdl>
+									<wsdl>http://10.10.35.192:8080/Web_Services/soap/users?wsdl</wsdl>
 								</wsdlOption>
 							</wsdlOptions>
 						</configuration>
