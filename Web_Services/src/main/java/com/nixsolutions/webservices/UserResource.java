@@ -11,19 +11,21 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
+import com.nixsolutions.model.ApiUserResponse;
 import com.nixsolutions.model.User;
 import com.nixsolutions.service.UserService;
 
 @Path("/users")
 @Component
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 public class UserResource {
 	static final Logger LOGGER = LoggerFactory.getLogger(UserResource.class);
 
@@ -39,56 +41,57 @@ public class UserResource {
 	@GET
 	@Path("user/{login}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response get(@PathParam("login") String login) {
+	public ApiUserResponse<User> get(@PathParam("login") String login) {
 		User user = userService.findByLogin(login);
 		LOGGER.debug("User -- > {}", user);
 
 		if (user == null) {
-			return Response.status(404).entity("User not found").build();
+			return new ApiUserResponse<User>(HttpStatus.NOT_FOUND.value(), "User not found", user);
 		}
-		return Response.ok().entity(user).build();
-
+		return new ApiUserResponse<User>(HttpStatus.OK.value(), "User successfully found by id", user);
 	}
 
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response create(User user) {
+	public ApiUserResponse<User> create(User user) {
 		if (userService.isUserLoginUnique(user.getLogin())) {
-			return Response.status(Status.CONFLICT).build();
+			return new ApiUserResponse(HttpStatus.CONFLICT.value(), "user already exists", user);
 		}
+		LOGGER.debug("User -- > {}", user);
+
 		userService.saveUser(user);
-		return Response.status(Status.CREATED).build();
+		return new ApiUserResponse<User>(HttpStatus.CREATED.value(), "User saved successfully", user);
 
 	}
 
 	@PUT
 	@Path("user/{login}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response update(@PathParam("login") String login, User newUser) {
+	public ApiUserResponse<User> update(@PathParam("login") String login, User newUser) {
 		LOGGER.debug("login -- > {}", login);
 
 		boolean userExist = userService.isUserLoginUnique(login);
 		if (userExist == false) {
-			return Response.status(Status.BAD_REQUEST).build();
+			return new ApiUserResponse(HttpStatus.BAD_REQUEST.value(), "user not found", newUser);
 		}
 
 		LOGGER.debug("User -- > {}", newUser);
 		userService.updateUser(newUser);
-		return Response.noContent().build();
+		return new ApiUserResponse(HttpStatus.NO_CONTENT.value(), "User updated successfully", newUser);
 
 	}
 
 	@DELETE
 	@Path("user/{login}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response delete(@PathParam("login") String login) {
+	public ApiUserResponse<User> delete(@PathParam("login") String login) {
 		User user = userService.findByLogin(login);
 		if (user == null) {
-			return Response.status(Status.BAD_REQUEST).build();
+			return new ApiUserResponse(HttpStatus.BAD_REQUEST.value(), "user not found", user);
 		}
 		userService.delete(user);
-		return Response.status(202).entity("User deleted successfully !!").build();
+		return new ApiUserResponse(HttpStatus.ACCEPTED.value(), "User deleted successfully", user);
 
 	}
 

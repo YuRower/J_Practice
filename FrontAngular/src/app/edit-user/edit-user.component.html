@@ -1,0 +1,50 @@
+<div class="col-md-6 user-container">
+    <h2 class="text-center">Edit User</h2>
+    <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="username">Login:</label>
+            <input type="text" formControlName="login" placeholder="login" name="login" class="form-control" id="login"
+                readonly="true">
+        </div>
+
+
+        <div class="form-group">
+            <label for="firstName">First Name:</label>
+            <input formControlName="firstName" placeholder="First Name" name="firstName" class="form-control"
+                id="firstName">
+        </div>
+
+        <div class="form-group">
+            <label for="lastName">Last Name:</label>
+            <input formControlName="lastName" placeholder="Last name" name="lastName" class="form-control"
+                id="lastName">
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" formControlName="password" placeholder="password" name="password"
+                class="form-control" id="password">
+        </div>
+        <div class="form-group">
+            <label for="birthday">Birthday:</label>
+            <input type="date" formControlName="birthday" placeholder="birthday" name="birthday" class="form-control"
+                id="birthday">
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" formControlName="email" placeholder="email" name="email" class="form-control"
+                id="email">
+        </div>
+
+
+        <select formControlName="roleId">
+            <option *ngFor="let state of roles" [ngValue]="state">
+                {{ state.name }}
+            </option>
+        </select>
+        <br>
+        <br>
+
+        <button class="btn btn-success">Update</button>
+    </form>
+</div>

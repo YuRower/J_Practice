@@ -4,10 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -18,8 +20,12 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
+import com.nixsolutions.security.jwt.JwtAuthenticationEntryPoint;
+import com.nixsolutions.security.jwt.JwtAuthenticationFilter;
+
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired
@@ -27,7 +33,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	UserDetailsService userDetailsService;
 
 	@Autowired
+	private JwtAuthenticationEntryPoint unauthorizedHandler;
+
+	@Autowired
 	PersistentTokenRepository tokenRepository;
+
+	@Override
+	@Bean
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
+	}
 
 	@Autowired
 	public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
@@ -35,10 +50,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		auth.authenticationProvider(authenticationProvider());
 	}
 
+	@Bean
+	public JwtAuthenticationFilter authenticationTokenFilterBean() throws Exception {
+		return new JwtAuthenticationFilter();
+	}
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().ignoringAntMatchers("/rest/**", "/soap/**").and().authorizeRequests()
-				.antMatchers("/rest/*", "/soap/*").permitAll().antMatchers("/", "/list")
+		http.cors().disable().csrf().ignoringAntMatchers("/rest/**", "/token/**").and().authorizeRequests()
+				.antMatchers("/rest/*", "/token/*", "/signup").permitAll().antMatchers("/", "/list")
 				.access("hasRole('USER') or hasRole('ADMIN')").antMatchers("/newuser/**", "/delete-user-*")
 				.access("hasRole('ADMIN')").antMatchers("/edit-user-*").access("hasRole('ADMIN')").and().formLogin()
 				.loginPage("/login").loginProcessingUrl("/login").usernameParameter("login")

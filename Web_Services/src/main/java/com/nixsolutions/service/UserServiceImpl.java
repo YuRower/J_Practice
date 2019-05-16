@@ -44,8 +44,10 @@ public class UserServiceImpl implements UserService {
 		User entity = dao.findByLogin(user.getLogin());
 		if (entity != null) {
 			// entity.setLogin(user.getLogin());
-			if (!user.getPassword().equals(entity.getPassword())) {
-				entity.setPassword(passwordEncoder.encode(user.getPassword()));
+			if (user.getPassword() != null) {
+				if (!user.getPassword().equals(entity.getPassword())) {
+					entity.setPassword(passwordEncoder.encode(user.getPassword()));
+				}
 			}
 			entity.setFirstName(user.getFirstName());
 			entity.setLastName(user.getLastName());

@@ -3,8 +3,6 @@ package com.nixsolutions.configuration;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
 
-import org.apache.cxf.BusFactory;
-import org.apache.cxf.transport.servlet.CXFServlet;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -29,13 +27,6 @@ public class ApplicationInitializer implements WebApplicationInitializer {
 
 		ServletRegistration.Dynamic wwebserviceDispatcher = container.addServlet("jersey-serlvet", new SpringServlet());
 		wwebserviceDispatcher.addMapping("/rest/*");
-
-		CXFServlet cxfServlet = new CXFServlet();
-		BusFactory.setDefaultBus(cxfServlet.getBus());
-		ServletRegistration.Dynamic dynamic = container.addServlet("cxf", cxfServlet);
-
-		dynamic.setLoadOnStartup(2);
-		dynamic.addMapping("/soap/*");
 
 	}
 }
