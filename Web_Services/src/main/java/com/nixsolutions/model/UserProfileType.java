@@ -15,10 +15,10 @@ public enum UserProfileType implements Serializable {
 		return userProfileType;
 	}
 
-	public static UserProfileType getType(User user) {
-		Integer typeId = user.getRoleId().getId();
-		return UserProfileType.values()[typeId.intValue() - 1];
-	}
+	/*
+	 * public static UserProfileType getType(User user) { Integer typeId =
+	 * user.getRoleId(); return UserProfileType.values()[typeId.intValue() - 1]; }
+	 */
 }
 /*
  * public static UserType getType(User user) { Integer typeId =

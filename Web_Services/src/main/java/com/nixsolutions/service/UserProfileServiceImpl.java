@@ -25,4 +25,10 @@ public class UserProfileServiceImpl implements UserProfileService {
 	public Role findById(Integer id) {
 		return dao.findById(id);
 	}
+
+	@Override
+	public Role findByName(String name) {
+		return dao.findByName(name);
+
+	}
 }

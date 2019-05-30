@@ -1,6 +1,0 @@
-12.04.2019 17:10:11 TRACE [main:] com.nixsolutions.DBUnitConfig -> <init> (37): DBUnit Config
-12.04.2019 17:10:11 TRACE [main:] com.nixsolutions.connection.ConnectionPool -> getInstance (34): get pool instance
-12.04.2019 17:10:11 TRACE [main:] com.nixsolutions.connection.ConnectionPool -> getInstance (39): new pool instance
-12.04.2019 17:10:11 TRACE [main:] com.nixsolutions.connection.ConnectionPool -> initPool (51): init pool
-12.04.2019 17:10:11 TRACE [main:] com.nixsolutions.connection.util.DBResourceManager -> loadProperties (34): load propertie files
-12.04.2019 17:10:11 DEBUG [main:] com.nixsolutions.connection.util.DBResourceManager -> loadProperties (39): Loaded resource from database

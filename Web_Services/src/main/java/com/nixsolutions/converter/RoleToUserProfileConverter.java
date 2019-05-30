@@ -19,6 +19,7 @@ public class RoleToUserProfileConverter implements Converter<Object, Role> {
 
 	@Override
 	public Role convert(Object element) {
+		logger.info("Converterrrrrrrrrrrr---------------------------------:");
 		Integer id = Integer.parseInt((String) element);
 		Role profile = userProfileService.findById(id);
 		logger.info("Profile : {}", profile);

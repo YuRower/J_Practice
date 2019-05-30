@@ -65,7 +65,7 @@ public class User implements Serializable {
 	// @JsonSerialize(using = JsonDateSerializer.class)
 	private Date birthday;
 
-	@ManyToOne
+	@ManyToOne()
 	@JoinColumn(name = "ROLE_ID")
 	private Role roleId;
 

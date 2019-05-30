@@ -13,4 +13,6 @@ public interface UserProfileService {
 
 	Role findById(Integer id);
 
+	Role findByName(String name);
+
 }

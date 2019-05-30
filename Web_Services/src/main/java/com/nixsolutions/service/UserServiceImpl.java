@@ -42,6 +42,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void updateUser(User user) {
 		User entity = dao.findByLogin(user.getLogin());
+		LOGGER.debug("updateUser" + entity);
+
 		if (entity != null) {
 			// entity.setLogin(user.getLogin());
 			if (user.getPassword() != null) {

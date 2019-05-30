@@ -41,11 +41,11 @@ public class AuthenticationController {
 	@RequestMapping(value = "/generate-token", method = RequestMethod.POST)
 	public ApiResponse<AuthToken> register(@RequestBody LoginUser loginUser) throws AuthenticationException {
 		LOGGER.debug("User -->>>> {}", loginUser);
-		final Authentication authentication = authenticationManager
-				.authenticate(new UsernamePasswordAuthenticationToken(loginUser.getLogin(), loginUser.getPassword()));
+		final Authentication authentication = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(loginUser.getUsername(), loginUser.getPassword()));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
-		final User user = userService.findByLogin(loginUser.getLogin());
+		final User user = userService.findByLogin(loginUser.getUsername());
 		final String token = jwtTokenUtil.generateToken(user);
 		/*
 		 * return Response.status(Response.Status.OK).entity(new

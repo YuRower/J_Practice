@@ -21,13 +21,16 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.nixsolutions.model.ApiUserResponse;
 import com.nixsolutions.model.User;
+import com.nixsolutions.service.UserProfileService;
 import com.nixsolutions.service.UserService;
 
 @Path("/users")
 @Component
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:3200", maxAge = 3600)
 public class UserResource {
 	static final Logger LOGGER = LoggerFactory.getLogger(UserResource.class);
+	@Autowired
+	private UserProfileService userProfile;
 
 	@Autowired
 	private UserService userService;
@@ -58,7 +61,7 @@ public class UserResource {
 		if (userService.isUserLoginUnique(user.getLogin())) {
 			return new ApiUserResponse(HttpStatus.CONFLICT.value(), "user already exists", user);
 		}
-		LOGGER.debug("User -- > {}", user);
+		LOGGER.debug("User -- > {} ,and role {}", user, user.getRoleId());
 
 		userService.saveUser(user);
 		return new ApiUserResponse<User>(HttpStatus.CREATED.value(), "User saved successfully", user);
@@ -68,15 +71,18 @@ public class UserResource {
 	@PUT
 	@Path("user/{login}")
 	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+
 	public ApiUserResponse<User> update(@PathParam("login") String login, User newUser) {
-		LOGGER.debug("login -- > {}", login);
+
+		LOGGER.debug("login for update -- > {} and role {} ", login, newUser.getRoleId());
 
 		boolean userExist = userService.isUserLoginUnique(login);
 		if (userExist == false) {
 			return new ApiUserResponse(HttpStatus.BAD_REQUEST.value(), "user not found", newUser);
 		}
 
-		LOGGER.debug("User -- > {}", newUser);
+		LOGGER.debug("------------------------User for upadte -------- > {}", newUser);
 		userService.updateUser(newUser);
 		return new ApiUserResponse(HttpStatus.NO_CONTENT.value(), "User updated successfully", newUser);
 
@@ -90,6 +96,8 @@ public class UserResource {
 		if (user == null) {
 			return new ApiUserResponse(HttpStatus.BAD_REQUEST.value(), "user not found", user);
 		}
+		LOGGER.debug("------------------------User for delete -------- > {}", user);
+
 		userService.delete(user);
 		return new ApiUserResponse(HttpStatus.ACCEPTED.value(), "User deleted successfully", user);
 
