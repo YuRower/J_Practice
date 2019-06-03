@@ -1,0 +1,37 @@
+<div class="container">
+    <section style="padding-bottom: 50px; padding-top: 50px;">
+        <div class="row">
+            <div class="col-md-4 login-container">
+                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                    <div class="form-group">
+                        <label for="login" class="control-label col-sm-2">Login:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" formControlName="login" id="login"
+                                autocomplete="off">
+                            <div class="error"
+                                *ngIf="loginForm.controls['login'].hasError('required') && loginForm.controls['login'].touched">
+                                Username is required</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="pwd">Password:</label>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" formControlName="password" id="pwd"
+                                autocomplete="off">
+                            <div class="error"
+                                *ngIf="loginForm.controls['password'].hasError('required') && loginForm.controls['password'].touched">
+                                Password is required</div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-success" [disabled]="loginForm.invalid">Sig in</button>
+                    <div *ngIf="invalidLogin" class="error">
+                        <div>Invalid credentials.</div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </section>
+</div>

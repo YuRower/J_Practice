@@ -1,0 +1,29 @@
+version: '3.7'
+
+services:
+
+  front_angular:
+    build: ./FrontAngular
+    ports:
+      - '4201:4200'
+  myh2:
+    container_name: 'myh2'
+    hostname: 'myh2'
+    build: ./db3
+    ports:
+      - "8181:8181"
+      - "1521:1521"
+    volumes:
+      - './db3/h2-data:/opt/h2-data'
+
+  tomcat:
+    build: ./tomcat
+    container_name: tomcat
+    ports:
+        - '8888:8080'
+    volumes:
+        - './logs/:/usr/local/tomcat/logs/'
+    depends_on:
+        - myh2
+    links:
+        - myh2
